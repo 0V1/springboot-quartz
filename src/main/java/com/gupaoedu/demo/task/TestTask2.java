@@ -1,6 +1,5 @@
 package com.gupaoedu.demo.task;
 
-import com.gupaoedu.demo.util.BaseJob;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -13,7 +12,7 @@ import java.util.Date;
  * @Date: 2018/9/11 17:15
  * @Description: 咕泡学院，只为更好的你
  */
-public class TestTask2 implements BaseJob {
+public class TestTask2 implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         Date date = new Date();

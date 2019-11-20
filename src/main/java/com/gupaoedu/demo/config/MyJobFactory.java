@@ -6,11 +6,11 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.stereotype.Component;
 
 /**
- *
  * 将Spring的对象注入到Quartz Job 2
  */
 @Component
 public class MyJobFactory extends AdaptableJobFactory {
+
     @Autowired
     private AutowireCapableBeanFactory capableBeanFactory;
 

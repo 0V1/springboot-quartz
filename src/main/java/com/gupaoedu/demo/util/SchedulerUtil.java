@@ -1,24 +1,20 @@
 package com.gupaoedu.demo.util;
 
 import com.alibaba.fastjson.JSONObject;
-import com.gupaoedu.demo.config.MyJobFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 
 /**
  * Quartz工具类
  * qingshan
- * 咕泡学院，只为更好的你
  *
  */
+@Slf4j
 public class SchedulerUtil {
-	private static Logger logger = LoggerFactory.getLogger(SchedulerUtil.class);
 
 	/**
 	 * 新增定时任务
@@ -54,11 +50,11 @@ public class SchedulerUtil {
 		try {
 			scheduler.scheduleJob(jobDetail, trigger);
 		} catch (SchedulerException e) {
-			logger.info("创建定时任务失败" + e);
+			log.info("创建定时任务失败" + e);
 			throw new Exception("创建定时任务失败");
 		}
 	}
-	
+
 	/**
 	 * 停用一个定时任务
 	 * @param jobName 任务名称
@@ -71,7 +67,7 @@ public class SchedulerUtil {
 		Scheduler scheduler = sf.getScheduler();
 		scheduler.pauseJob(JobKey.jobKey(jobName, jobGroupName));
 	}
-	
+
 	/**
 	 * 启用一个定时任务
 	 * @param jobName 任务名称
@@ -84,7 +80,7 @@ public class SchedulerUtil {
 		Scheduler scheduler = sf.getScheduler();
 		scheduler.resumeJob(JobKey.jobKey(jobName, jobGroupName));
 	}
-	
+
 	/**
 	 * 删除一个定时任务
 	 * @param jobName 任务名称
@@ -99,7 +95,7 @@ public class SchedulerUtil {
 		scheduler.unscheduleJob(TriggerKey.triggerKey(jobName, jobGroupName));
 		scheduler.deleteJob(JobKey.jobKey(jobName, jobGroupName));
 	}
-	
+
 	/**
 	 * 更新定时任务表达式
 	 * @param jobName 任务名称
@@ -124,7 +120,7 @@ public class SchedulerUtil {
 			throw new Exception("更新定时任务失败");
 		}
 	}
-	
+
 	/**
 	 * 检查Job是否存在
 	 * @throws Exception
@@ -134,7 +130,7 @@ public class SchedulerUtil {
 		Scheduler scheduler = sf.getScheduler();
 		TriggerKey triggerKey = TriggerKey.triggerKey(jobName, jobGroupName);
 		Boolean state = scheduler.checkExists(triggerKey);
-	     
+
 		return state;
 	}
 
@@ -164,14 +160,14 @@ public class SchedulerUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static BaseJob getClass(String classname) throws Exception {
+	public static Job getClass(String classname) throws Exception {
 		try {
 			Class<?> c = Class.forName(classname);
-			return (BaseJob) c.newInstance();
+			return (Job) c.newInstance();
 		} catch (Exception e) {
 			throw new Exception("类["+classname+"]不存在！");
 		}
-		
+
 	}
 
 }
