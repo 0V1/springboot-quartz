@@ -1,4 +1,4 @@
-CREATE database gupao;
+CREATE database quartz;
 
 CREATE TABLE `sys_job` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',

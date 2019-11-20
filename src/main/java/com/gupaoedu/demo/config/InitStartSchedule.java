@@ -2,6 +2,9 @@ package com.gupaoedu.demo.config;
 
 import com.alibaba.fastjson.JSONObject;
 import com.gupaoedu.demo.entity.SysJob;
+import com.gupaoedu.demo.listener.MyJobListener;
+import com.gupaoedu.demo.listener.MySchedulerListener;
+import com.gupaoedu.demo.listener.MyTriggerListener;
 import com.gupaoedu.demo.service.ISysJobService;
 import com.gupaoedu.demo.util.BaseJob;
 import org.apache.commons.lang3.StringUtils;
@@ -26,18 +29,29 @@ import java.util.Map;
 @Component
 public class InitStartSchedule implements CommandLineRunner {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+
 	@Autowired
 	private ISysJobService sysJobService;
+
 	@Autowired
 	private MyJobFactory myJobFactory;
-	
+
+	@Autowired
+	private MyJobListener myJobListener;
+
+	@Autowired
+	private MyTriggerListener myTriggerListener;
+
+	@Autowired
+	private MySchedulerListener mySchedulerListener;
+
+
 	@Override
 	public void run(String... args) throws Exception {
 		/**
 		 * 用于程序启动时加载定时任务，并执行已启动的定时任务(只会执行一次，在程序启动完执行)
 		 */
-		
+
 		//查询job状态为启用的
 		HashMap<String,String> map = new HashMap<String,String>();
 		map.put("jobStatus", "1");
@@ -50,6 +64,9 @@ public class InitStartSchedule implements CommandLineRunner {
 		Scheduler scheduler = sf.getScheduler();
 		// 如果不设置JobFactory，Service注入到Job会报空指针
 		scheduler.setJobFactory(myJobFactory);
+		scheduler.getListenerManager().addJobListener(myJobListener);
+		scheduler.getListenerManager().addSchedulerListener(mySchedulerListener);
+		scheduler.getListenerManager().addTriggerListener(myTriggerListener);
 		// 启动调度器
 		scheduler.start();
 
@@ -81,7 +98,7 @@ public class InitStartSchedule implements CommandLineRunner {
 	        }
 		}
 	}
-	
+
 	public static BaseJob getClass(String classname) throws Exception
 	{
 		Class<?>  c= Class.forName(classname);

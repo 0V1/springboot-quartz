@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @MapperScan("com.gupaoedu.demo.mapper")
-
 public class QuartzApp {
 
 	public static void main(String[] args) {
